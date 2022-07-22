@@ -30,7 +30,46 @@ namespace RestAPI.Services
 
         public ToDoModel GetToDoById(int id)
         {
-            return new ToDoModel { Id = 3, Title = "Testing" };
+            ToDoModel task = new ToDoModel();
+            using (var connection = new MySqlConnection(_db.getDBConnectionString()))
+            {
+                task = connection.QuerySingleOrDefault<ToDoModel>("Select * From tasks Where Id=@Id", new { Id = id });
+                return task;
+            }
+        }
+
+        public int AddNewTask(ToDoModel todoModel)
+        {
+            var task = new { 
+                Title = todoModel.Title,
+            };
+            using (var connection = new MySqlConnection(_db.getDBConnectionString()))
+            {
+                var affectedRows = connection.Execute("Insert into tasks (Title) values (@Title)", task);
+                return affectedRows;
+            }
+        }
+
+        public int UpdateTask(ToDoModel toDoModel, int id)
+        {
+            var task = new {
+                Id = id,
+                Title = toDoModel.Title
+            };
+            using ( var connection = new MySqlConnection(_db.getDBConnectionString()))
+            {
+                var affectedRows = connection.Execute("Update tasks set Title = @Title Where Id = @Id", task);
+                return affectedRows;
+            }
+        }
+
+        public int DeleteTask(int id)
+        {
+            using (var connection = new MySqlConnection(_db.getDBConnectionString()))
+            {
+                var affectedRows = connection.Execute("Delete from tasks Where Id = @Id", new { Id = id });
+                return affectedRows;
+            }
         }
     }
 }

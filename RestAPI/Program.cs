@@ -13,13 +13,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-/*builder.Services.AddDbContext<RestAPI.DataContext.AppContext>(options =>
-          options.UseMySql(
-              Configuration.GetConnectionString("DefaultConnection")));*/
-
 //Include Repos
 builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
-builder.Services.AddScoped<IDapper, Dapperr>();
+builder.Services.AddCors(option =>
+{
+    option.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -31,7 +33,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
-
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RestAPI.Models;
 using RestAPI.Services;
 
 namespace RestAPI.Controllers
@@ -26,6 +27,27 @@ namespace RestAPI.Controllers
         {
             var obj = _toDoService.GetToDoById(id);
             return Ok(obj);
+        }
+
+        [HttpPost("")]
+        public IActionResult AddNewTask([FromBody] ToDoModel todoModel)
+        {
+            var affectedRows = _toDoService.AddNewTask(todoModel);
+            return Ok(affectedRows);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateTask([FromBody] ToDoModel todoModel, [FromRoute] int id)
+        {
+            var affectedRows = _toDoService.UpdateTask(todoModel, id);
+            return Ok(affectedRows);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteTask([FromRoute] int id)
+        {
+            var affectedRows = _toDoService.DeleteTask(id);
+            return Ok(affectedRows);
         }
     }
 }
