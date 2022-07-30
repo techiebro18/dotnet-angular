@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Official\\works\\dotnet\\RestAPI\\RestAPI\\RestAPI.csproj": {}
+    "F:\\dotnet\\RestAPI\\RestAPI\\RestAPI.csproj": {}
   },
   "projects": {
-    "D:\\Official\\works\\dotnet\\RestAPI\\RestAPI\\RestAPI.csproj": {
+    "F:\\dotnet\\RestAPI\\RestAPI\\RestAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Official\\works\\dotnet\\RestAPI\\RestAPI\\RestAPI.csproj",
+        "projectUniqueName": "F:\\dotnet\\RestAPI\\RestAPI\\RestAPI.csproj",
         "projectName": "RestAPI",
-        "projectPath": "D:\\Official\\works\\dotnet\\RestAPI\\RestAPI\\RestAPI.csproj",
+        "projectPath": "F:\\dotnet\\RestAPI\\RestAPI\\RestAPI.csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "D:\\Official\\works\\dotnet\\RestAPI\\RestAPI\\obj\\",
+        "outputPath": "F:\\dotnet\\RestAPI\\RestAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -47,6 +47,10 @@
               "target": "Package",
               "version": "[2.0.123, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.7, )"
@@ -58,6 +62,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.22.0, )"
             }
           },
           "imports": [
