@@ -15,6 +15,8 @@ builder.Services.AddControllers();
 
 //Include Repos
 builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
+
+//Solve CORS issue 
 builder.Services.AddCors(option =>
 {
     option.AddDefaultPolicy(builder =>
@@ -22,6 +24,8 @@ builder.Services.AddCors(option =>
         builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
 });
+
+//For JWT Token Configuration
 builder.Services.AddAuthentication(x =>
 {
 	x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -41,7 +45,12 @@ builder.Services.AddAuthentication(x =>
 		IssuerSigningKey = new SymmetricSecurityKey(Key)
 	};
 });
+//Register Repo to Test JWT Authentication
 builder.Services.AddSingleton<IJWTManagerRepository, JWTManagerRepository>();
+
+//Register for Automapper
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
