@@ -2,10 +2,24 @@ using RestAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using RestAPI.DataContext;
+using FluentMigrator.Runner;
+using System.Reflection;
+using MySql.Data.MySqlClient;
+using RestAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddSingleton<DapperDatabase>();
+
+//Configure FluentMigrator on startup
+builder.Services.AddLogging(c => c.AddFluentMigratorConsole())
+        .AddFluentMigratorCore()
+        .ConfigureRunner(c => c.AddMySql5()
+            .WithGlobalConnectionString(builder.Configuration.GetConnectionString("dappermigrationexample"))
+            .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -52,8 +66,29 @@ builder.Services.AddSingleton<IJWTManagerRepository, JWTManagerRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
 
+//builder.Services.AddTransient<MySqlConnection>(_ => new MySqlConnection(builder.Configuration["ConnectionStrings:MySqlConnection"]));
+
+
 var app = builder.Build();
 
+//Auto migrate DB, Tables on application startup
+/*using (var scope = app.Services.CreateScope())
+{
+    var databaseService = scope.ServiceProvider.GetRequiredService<DapperDatabase>();
+    var migrationService = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+    try
+    {
+        databaseService.CreateDatabase("dappermigrationexample");
+        migrationService.ListMigrations();
+        migrationService.MigrateUp();
+    }
+    catch
+    {
+        //log errors or
+        throw;
+    }
+}*/
+app.MigrateDatabase();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -69,3 +104,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

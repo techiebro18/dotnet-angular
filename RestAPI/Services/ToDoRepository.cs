@@ -11,10 +11,12 @@ namespace RestAPI.Services
     {
         private readonly Database _db;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
 
-        public ToDoRepository(IMapper mapper)
+        public ToDoRepository(IMapper mapper, IConfiguration configuration)
         {
-            _db = new Database();
+            _configuration = configuration;
+            _db = new Database(_configuration);
             _mapper = mapper;
         }
         public List<ToDoViewModel> ToDos()
